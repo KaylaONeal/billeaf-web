@@ -47,14 +47,14 @@ function saveState() {
 }
 
 const CAT_COLORS = {
-  software: "#0f8763",
-  streaming: "#21ab8e",
-  music: "#d97d23",
-  news: "#3d75b8",
-  cloud: "#5c8c73",
-  fitness: "#a66bad",
-  utilities: "#389ead",
-  other: "#7a8a85"
+  software: "#0f7a5b",
+  streaming: "#d95f38",
+  music: "#d98a1c",
+  news: "#2b6cb0",
+  cloud: "#16969b",
+  fitness: "#8b5cf6",
+  utilities: "#475569",
+  other: "#6b7280"
 };
 
 function renderDonutChart(summary) {
@@ -94,8 +94,8 @@ function renderDonutChart(summary) {
     <svg width="104" height="104" viewBox="0 0 104 104" aria-label="Monthly category distribution">
       <circle cx="52" cy="52" r="${r}" fill="none" stroke="rgba(15, 122, 91, 0.12)" stroke-width="14" />
       ${rings}
-      <text x="52" y="50" text-anchor="middle" font-size="14" font-weight="800" fill="currentColor">${summary.categories.length}</text>
-      <text x="52" y="64" text-anchor="middle" font-size="9" font-weight="600" fill="#4f6d61">CATEGORIES</text>
+      <text x="52" y="50" text-anchor="middle" font-size="15" font-weight="800" fill="currentColor">${summary.activeCount}</text>
+      <text x="52" y="64" text-anchor="middle" font-size="9" font-weight="700" fill="#4f6d61">BILLS</text>
     </svg>
     <div class="cat-legend">${legend}</div>`;
 }
