@@ -8,6 +8,9 @@
   <meta property="og:title" content="Billeaf Web Ledger — Free Subscription Audit" />
   <meta property="og:description" content="100% browser-local subscription ledger with 30-day renewal calendar and free CSV/JSON import &amp; export. Zero bank logins." />
   <link rel="icon" type="image/png" href="./icon-128.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
@@ -36,11 +39,13 @@
     </header>
 
     <div class="layout">
-      <aside class="card">
-        <h2>1. Quick Add Preset</h2>
+      <aside class="panel">
+        <h2>Quick Add Preset</h2>
         <div id="presetChips" class="preset-wrap"></div>
 
-        <h2>2. Add Custom Bill</h2>
+        <hr class="section-divider" />
+
+        <h2>Add Custom Bill</h2>
         <form id="addForm">
           <input id="subName" class="field" type="text" placeholder="Service name (e.g. Claude Pro)" required style="margin-bottom:8px;" />
           <div class="form-grid">
@@ -74,11 +79,11 @@
           <label for="subDate" style="display:block;font-size:0.78rem;color:var(--muted);margin-bottom:4px;">Next renewal date</label>
           <input id="subDate" class="field" type="date" style="margin-bottom:8px;" required />
           <input id="subCancelUrl" class="field" type="url" placeholder="Cancellation help URL (optional)" style="margin-bottom:10px;" />
-          <button class="btn primary" type="submit" style="width:100%;">+ Add Subscription</button>
+          <button class="btn primary" type="submit" style="width:100%;">Add Subscription</button>
         </form>
       </aside>
 
-      <main class="card">
+      <main class="panel">
         <div class="burn-hero">
           <div class="burn-grid">
             <div>
@@ -87,20 +92,20 @@
             </div>
             <div>
               <div class="burn-sub">Annualized Total</div>
-              <div id="annualTotal" style="font-size:1.25rem;font-weight:600;">$0.00</div>
+              <div id="annualTotal" class="metric-val">$0.00</div>
             </div>
             <div>
               <div class="burn-sub">Tracked</div>
-              <div id="activeMeta" style="font-size:1rem;font-weight:600;">0 active</div>
+              <div id="activeMeta" class="metric-val" style="font-size:1.02rem;">0 active</div>
             </div>
           </div>
         </div>
 
-        <div id="catBars" class="cat-bars"></div>
+        <div id="catBars" class="donut-panel"></div>
 
         <div class="tabs">
           <button id="tabLedgerBtn" class="btn active" type="button">All Bills</button>
-          <button id="tabCalendarBtn" class="btn" type="button">30-Day Due (<span id="dueCount">0</span>)</button>
+          <button id="tabCalendarBtn" class="btn" type="button">30-Day Due (<span id="dueCount" class="num">0</span>)</button>
           <button id="resetDemoBtn" class="btn" type="button" style="margin-left:auto;">Reset Samples</button>
         </div>
 
@@ -132,17 +137,16 @@
     <footer style="margin-top:28px;padding-top:16px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;font-size:0.82rem;color:var(--muted);">
       <span>Billeaf — Private subscription &amp; renewal ledger. No bank logins, no ads, zero servers.</span>
       <span style="display:flex;gap:14px;">
-        <a href="./privacy.html" style="color:var(--accent);">Privacy Policy</a>
-        <a href="https://kaylaoneal.github.io/billeaf-support/" style="color:var(--accent);">iOS &amp; Mac Support</a>
+        <a href="./privacy.html">Privacy Policy</a>
+        <a href="https://kaylaoneal.github.io/billeaf-support/">iOS &amp; Mac Support</a>
       </span>
     </footer>
   </div>
 
   <div id="proModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="proTitle">
     <div class="modal">
-      <span class="pill">No Subscription Trap · Buy Once</span>
-      <h3 id="proTitle" style="margin:10px 0 4px;">Billeaf for iPhone, iPad &amp; Mac</h3>
-      <div class="price-tag">$12.99 <span style="font-size:0.86rem;font-weight:400;color:var(--muted);">one-time universal unlock · 8 bills free</span></div>
+      <h3 id="proTitle">Billeaf for iPhone, iPad &amp; Mac</h3>
+      <div class="price-tag">$12.99 <span style="font-size:0.86rem;font-weight:500;color:var(--muted);">one-time universal unlock · 8 bills free · no subscription trap</span></div>
       <ul>
         <li><strong>Local OS Renewal Reminders:</strong> Private advance <code>UNUserNotificationCenter</code> notifications 3 days before charges hit.</li>
         <li><strong>Works Completely Offline:</strong> Track recurring bills across iPhone, iPad, and Mac with zero Plaid/bank connections.</li>

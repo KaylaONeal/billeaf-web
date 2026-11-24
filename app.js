@@ -46,6 +46,60 @@ function saveState() {
   } catch {}
 }
 
+const CAT_COLORS = {
+  software: "#0f8763",
+  streaming: "#21ab8e",
+  music: "#d97d23",
+  news: "#3d75b8",
+  cloud: "#5c8c73",
+  fitness: "#a66bad",
+  utilities: "#389ead",
+  other: "#7a8a85"
+};
+
+function renderDonutChart(summary) {
+  const cats = summary.categories.slice(0, 5);
+  if (!cats.length) {
+    return `<div style="color:var(--muted);font-size:0.84rem;">Add active bills to inspect your category breakdown.</div>`;
+  }
+  const r = 38;
+  const c = 2 * Math.PI * r;
+  let offset = 0;
+  const rings = cats
+    .map((cat) => {
+      const col = CAT_COLORS[cat.category] || CAT_COLORS.other;
+      const seg = Math.max(0.02, cat.share) * c;
+      const gap = cats.length > 1 ? 3 : 0;
+      const dash = `${Math.max(2, seg - gap).toFixed(2)} ${c.toFixed(2)}`;
+      const rot = ((offset / c) * 360 - 90).toFixed(2);
+      offset += seg;
+      return `<circle cx="52" cy="52" r="${r}" fill="none" stroke="${col}" stroke-width="14" stroke-dasharray="${dash}" transform="rotate(${rot} 52 52)" stroke-linecap="butt" />`;
+    })
+    .join("");
+
+  const legend = summary.categories
+    .slice(0, 4)
+    .map((cat) => {
+      const col = CAT_COLORS[cat.category] || CAT_COLORS.other;
+      return `
+      <div class="cat-row">
+        <span class="cat-swatch" style="background:${col};"></span>
+        <span class="cat-name">${escapeHTML(cat.label)}</span>
+        <span class="cat-val">${escapeHTML(formatMoney(cat.monthlyAmount, displayCurrency))} (${Math.round(cat.share * 100)}%)</span>
+      </div>`;
+    })
+    .join("");
+
+  return `
+    <svg width="104" height="104" viewBox="0 0 104 104" aria-label="Monthly category distribution">
+      <circle cx="52" cy="52" r="${r}" fill="none" stroke="rgba(15, 122, 91, 0.12)" stroke-width="14" />
+      ${rings}
+      <text x="52" y="50" text-anchor="middle" font-size="14" font-weight="800" fill="currentColor">${summary.categories.length}</text>
+      <text x="52" y="64" text-anchor="middle" font-size="9" font-weight="600" fill="#4f6d61">CATEGORIES</text>
+    </svg>
+    <div class="cat-legend">${legend}</div>`;
+}
+
 function render() {
   const today = new Date().toISOString().slice(0, 10);
   const summary = computeBurnSummary(items, displayCurrency, today);
@@ -55,17 +109,7 @@ function render() {
   el("activeMeta").textContent = `${summary.activeCount} active${summary.pausedCount ? ` · ${summary.pausedCount} paused` : ""}`;
   el("dueCount").textContent = String(summary.upcoming30d.length);
 
-  el("catBars").innerHTML = summary.categories
-    .slice(0, 4)
-    .map(
-      (c) => `
-      <div class="cat-row">
-        <span>${escapeHTML(c.label)}</span>
-        <div class="cat-track"><div class="cat-fill" style="width:${Math.max(4, Math.round(c.share * 100))}%"></div></div>
-        <span style="text-align:right;font-variant-numeric:tabular-nums;">${escapeHTML(formatMoney(c.monthlyAmount, displayCurrency))}</span>
-      </div>`
-    )
-    .join("");
+  el("catBars").innerHTML = renderDonutChart(summary);
 
   const list = viewMode === "calendar" ? summary.upcoming30d : items;
   const tbody = el("ledgerRows");
